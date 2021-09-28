@@ -1,27 +1,19 @@
 // get User
 
-data = [
+data: [
 	{
 		"id": 0,
 		"Vorname": "Jasmin",
 		"Nachname": "Peter",
 		"Klasse": "5",
+		"anwesend": true,
+		"entschuldigt": true,
+		"test_erforderlich": true,
 	}, 
 	{
 		"id": 1,
 		"Vorname": "Jasmin",
 		"Nachname": "Peter",
 		"Klasse": "5",
-	}
-]
-
-// get daily user REQUEST PARAMS: user_id; date
-
-data = [
-	{
-		"last_test": "25.02.2021",
-		"vaccinated": false,
-		"self_tested": false,
-		"present": false,
 	}
 ]
