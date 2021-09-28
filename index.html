@@ -26,7 +26,9 @@
         <th>Covid-Status</th>
     </tr>
 </table>
-<script>
+<!--
+
+  <script>
     let tbodyRef = document.getElementById('covidTable').getElementsByTagName('tbody')[0];
 
 
@@ -68,30 +70,66 @@
 
     }
 
-function convertIntoClass(){
-    let data  = [
-        {
-            "id": 0,
-            "Vorname": "Jasmin",
-            "Nachname": "Peter",
-            "Klasse": "5",
-        },
-        {
-            "id": 1,
-            "Vorname": "Jasmin",
-            "Nachname": "Peter",
-            "Klasse": "5",
-        }
-    ]
+function convertIntoClass(data){
+
 
     let classList = []
 
 
     for (let i = 0; i < data.length; i++) {
-        
+        if (!isInArray(data[i]["Klasse"], classList))
+            classList[classList.length] = (data[i]["Klasse"])
+
+
+        classList[whereInArray(data[i]["Klasse"], classList)] = ["5"]
+        classList[whereInArray(data[i]["Klasse"], classList)] = [
+                data[i]["Vorname"] + " " + data[i]["Nachname"],
+                getPresent(data[i]),
+                getCovidStatus(data[i])
+            ]
+        console.log(classList)
     }
 
+    console.log(classList)
+    return classList
 }
+
+function getCovidStatus(data){
+    if (!data["test_erforderlich"] === true){
+        return "&#9745;"
+    } else{
+        return "x"
+    }
+}
+
+function getPresent(data) {
+    if (data["anwesend"] === true){
+       return "&#9745;"
+    } if (data["entschuldigt"] === true){
+        return "/"
+    } else{
+        return "x"
+    }
+}
+
+function isInArray(string, array){
+    let inArray
+    for (let i = 0; i < array.length; i++) {
+        if (string === array[i])
+            inArray = true
+    }
+    return inArray
+}
+
+function whereInArray(string, array){
+    let whereInArray
+    for (let i = 0; i < array.length; i++) {
+        if (string === array[i])
+            whereInArray = i
+    }
+    return whereInArray
+}
+
 
 
     let classFive = [
@@ -114,6 +152,19 @@ function convertIntoClass(){
             ["windbeutel", "ja", "nein"]]
     ]
 
+    let data  = [{
+        "id": 0,
+        "Vorname": "Jasmin",
+        "Nachname": "Peter",
+        "Klasse": "5",
+        "anwesend": true,
+        "entschuldigt": true,
+        "test_erforderlich": false,
+    }]
+
+    for (let i = 0; i < convertIntoClass(data).length; i++) {
+        addClass(convertIntoClass(data))
+    }
 
 
     addClass(classFive)
@@ -124,6 +175,36 @@ function convertIntoClass(){
 
     //todo create students from
 
+</script>
+
+-->
+
+<script>
+    let result = {
+        "id": 0,
+        "Vorname": "Jasmin",
+        "Nachname": "Peter",
+        "Klasse": "5",
+        "anwesend": true,
+        "entschuldigt": true,
+        "test_erforderlich": false
+    };
+
+    var data = [];
+
+    for(var i in result)
+        data.push([i, result [i]]);
+
+
+    console.log(length.data)
+    for (let i = 0; i < length.data; i++){
+       const div = document.createElement('div');
+       div.innerHTML = data[i]["Vorname"];
+       div.innerHTML += data[i]["Nachname"];
+       div.innerHTML += data[i]["Klasse"];
+       div.innerHTML += data[i]["entschuldigt"];
+       div.innerHTML += data[i]["test_erforderlich"];
+    }
 </script>
 </body>
 </html>

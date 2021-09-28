@@ -1,6 +1,6 @@
 // get User
 
-data: [
+let data: [
 	{
 		"id": 0,
 		"Vorname": "Jasmin",
@@ -9,11 +9,5 @@ data: [
 		"anwesend": true,
 		"entschuldigt": true,
 		"test_erforderlich": true,
-	}, 
-	{
-		"id": 1,
-		"Vorname": "Jasmin",
-		"Nachname": "Peter",
-		"Klasse": "5",
 	}
 ]
