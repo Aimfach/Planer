@@ -1,40 +1,49 @@
 <?php
-get_all_users();
-function setInBase($number, $date, $id, $userID)
+function get_user_details($date, $user_id)
 {
-    $servername = "localhost";
+    $servername = "localhost:3306";
     $username = "root";
     $password = "";
-    $dbname = "Abrechnung";
+    $dbname = "planer_database";
 
     try {
+
         $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
 
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
+        $stmt = $conn->prepare("SELECT * FROM covid_status, user_present WHERE covid_status.user_id=:user_id AND user_present.user_id=:user_id AND user_present.date=:date_given");
 
-        $stmt = $conn->prepare("INSERT INTO fines (patientID, date, code, userID) VALUES (:id, :date, :code, :userid);");
-
-        $stmt->bindParam(':code', $code);
-        $stmt->bindParam(':date', $date);
-        $stmt->bindParam(':id', $id);
-        $stmt->bindParam(':userid', $userID);
+        $stmt->bindParam(':user_id', $user_id);
+        $stmt->bindParam(':date_given', $date);
 
         $stmt->execute();
-        return "success";
+
+        if ($stmt->rowCount() > 0) {
+
+            $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
+            $result = $stmt->fetch();
+            $res['vaccinated'] = $result['vaccinated'];
+            $res['last_self_test'] = $result['last_self_test'];
+            $res['present'] = $result['present'];
+            $res['excused'] = $result['excused'];
+
+            return $res;
+        } else {
+
+            return null;
+        }
     } catch (PDOException $e) {
         echo "Error: " . $e->getMessage();
-        return "Error: " . $e->getMessage();
+        return null;
     }
     $conn = null;
 
-}
-
-function get_user_details() {
 
 }
 
-function get_all_users() {
+function get_all_user_data($date)
+{
     $servername = "localhost:3306";
     $username = "root";
     $password = "";
@@ -61,10 +70,12 @@ function get_all_users() {
                 $res[$counter]['id'] = $result['id'];
                 $res[$counter]['name'] = $result['name'];
                 $res[$counter]['pre_name'] = $result['pre_name'];
+                $tmp = get_user_details($date, $result['id']);
+                $res[$counter] = array_merge($res[$counter], $tmp);
                 $counter = $counter + 1;
                 echo $counter;
             }
-            print_r($res);
+            echo json_encode(['data' => $res]);
             return $res;
         } else {
             echo "failed";
@@ -78,3 +89,31 @@ function get_all_users() {
     $conn = null;
 }
 
+function set_user_covid_status($key, $value, $user_id)
+{
+    $servername = "localhost";
+    $username = "root";
+    $password = "";
+    $dbname = "Abrechnung";
+
+    try {
+        $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+
+        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+
+        $stmt = $conn->prepare("INSERT INTO covid_status (" + $key + ", user_id) VALUES (:value, :userid);");
+
+        $stmt->bindParam(':value', $value);
+        $stmt->bindParam(':user_id', $user_id);
+
+        $stmt->execute();
+        return "success";
+    } catch (PDOException $e) {
+        echo "Error: " . $e->getMessage();
+        return "Error: " . $e->getMessage();
+    }
+    $conn = null;
+
+
+}
