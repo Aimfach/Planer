@@ -1,1 +1,129 @@
-penis
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Planer</title>
+    <link rel="stylesheet" href="stylesheet.css">
+</head>
+<body>
+
+<h1>Corona-Planer</h1>
+<h2 id = "dateDiv">Datum</h2>
+<script>
+    const d = new Date();
+    document.getElementById("dateDiv").innerHTML = d.getDate() + "." + d.getMonth() + "." + d.getFullYear();
+    //todo wochentag einfügen
+</script>
+
+<h2>uhrzeit</h2>
+<h2>angemeldet</h2>
+
+<table id="covidTable">
+    <tr>
+        <th></th>
+        <th></th>
+        <th>Anwesendheit</th>
+        <th>Covid-Status</th>
+    </tr>
+</table>
+<script>
+    let tbodyRef = document.getElementById('covidTable').getElementsByTagName('tbody')[0];
+
+
+    function addStudent(student){
+        let tName = student[0]               //name of the student
+        let bPresent = student[1]              //present or not
+        let bCovidStatus = student[2]            //covidstatus
+
+
+        let newRow = tbodyRef.insertRow();
+
+        let emptyCell = newRow.insertCell();
+        let name = newRow.insertCell();
+        let present = newRow.insertCell();
+        let covidStatus = newRow.insertCell();
+
+        let nameText = document.createTextNode(tName);
+        let presentText = document.createTextNode(bPresent);
+        let covidStatusText = document.createTextNode(bCovidStatus);
+
+        name.appendChild(nameText);
+        present.appendChild(presentText);
+        covidStatus.appendChild(covidStatusText);
+    }
+
+    function addClass(classOverview){
+        let className = classOverview[0]
+        let classObject = classOverview[1]
+
+        let newRow = tbodyRef.insertRow();
+        let emptyCell = newRow.insertCell();
+        let nameText = document.createTextNode(className);
+
+        emptyCell.appendChild(nameText);
+
+        for (let i = 0; i < classObject.length; i++) {
+            addStudent(classObject[i])
+        }
+
+    }
+
+function convertIntoClass(){
+    let data  = [
+        {
+            "id": 0,
+            "Vorname": "Jasmin",
+            "Nachname": "Peter",
+            "Klasse": "5",
+        },
+        {
+            "id": 1,
+            "Vorname": "Jasmin",
+            "Nachname": "Peter",
+            "Klasse": "5",
+        }
+    ]
+
+    let classList = []
+
+
+    for (let i = 0; i < data.length; i++) {
+        
+    }
+
+}
+
+
+    let classFive = [
+        ["5s"],
+        [
+            ["Selina", "ja", "ja"],
+            ["julia", "ja", "ja"],
+            ["laura", "nein", "ja"],
+            ["johannes", "ja", "ja"],
+            ["windbeutel", "ja", "nein"]]
+    ]
+
+    let classSix = [
+        ["6s"],
+        [
+            ["Selina", "ja", "ja"],
+            ["julia", "ja", "ja"],
+            ["laura", "nein", "ja"],
+            ["johannes", "ja", "ja"],
+            ["windbeutel", "ja", "nein"]]
+    ]
+
+
+
+    addClass(classFive)
+    addClass(classSix)
+
+
+
+
+    //todo create students from
+
+</script>
+</body>
+</html>
